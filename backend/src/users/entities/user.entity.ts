@@ -5,7 +5,6 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryG
 export enum UserRole {
     MEGA = "megaadmin",
     ADMIN = "admin",
-    OPERATOR = "operador",
 }
 
 @Entity()

@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from './entities/appointment.entity';
 import { Repository } from 'typeorm';
 import { Client } from 'src/clients/entities/client.entity';
-import { User, UserRole } from 'src/users/entities/user.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AppointmentService {
@@ -32,7 +32,7 @@ export class AppointmentService {
       },
     });
 
-    if (!user || user.role === UserRole.OPERATOR) {
+    if (!user) {
       throw new UnauthorizedException('Unauthorized user');
     }
 
@@ -128,59 +128,30 @@ export class AppointmentService {
     }
   }
 
-  async findOneAppointment(id: number, idUser: number, idClient: number) {
-    const findClient = await this.clientRepository.findOne({
-      where: {
-        id: idClient,
-        user: {
-          id: idUser,
-        },
-      
-      }
-    });
-
-    if (!findClient) {
-      throw new NotFoundException("Client not found");
-    }
-
+  async findOneAppointment(id: number) {
     const findAppointmentClient = await this.appointmentRepository.findOne({
       where: {
         id,
-        client: {id: idClient}
       }
     });
 
     return findAppointmentClient;
   }
 
-  async updateAppointment(id: number, updateAppointmentDto: UpdateAppointmentDto, idUser: number, idClient: number){
+  async updateAppointment(id: number, updateAppointmentDto: UpdateAppointmentDto, idUser: number){
     const user = await this.userRepository.findOne({
       where: {
         id: idUser
       }
     });
 
-    if (!user || user.role === UserRole.OPERATOR) {
+    if (!user) {
       throw new UnauthorizedException('Unauthorized user');
-    }
-
-    const findClient = await this.clientRepository.findOne({
-      where: {
-        id: idClient,
-        user: {
-          id: idUser,
-        },
-      }
-    });
-
-    if (!findClient) {
-      throw new NotFoundException("Client not found");
     }
 
     const updateAppointment = await this.appointmentRepository.findOne({
       where: {
         id,
-        client: {id: idClient}
       }
     });
 
@@ -203,7 +174,7 @@ export class AppointmentService {
       }
     });
 
-    if (!user || user.role === UserRole.OPERATOR) {
+    if (!user) {
       throw new UnauthorizedException('Unauthorized user');
     }
 

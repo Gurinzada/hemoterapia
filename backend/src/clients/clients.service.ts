@@ -4,7 +4,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
-import { User, UserRole } from 'src/users/entities/user.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class ClientsService {
@@ -17,7 +17,7 @@ export class ClientsService {
   async createClient(createClientDto: CreateClientDto, idUser: number) {
     const user = await this.userRepository.findOne({ where: { id: idUser } });
 
-    if (!user || user.role === UserRole.OPERATOR) {
+    if (!user) {
       throw new UnauthorizedException('Unauthorized user');
     }
 
@@ -88,7 +88,7 @@ export class ClientsService {
         }
       }
     });
-    if (!user || user.role === UserRole.OPERATOR) {
+    if (!user) {
       throw new UnauthorizedException('Unauthorized user');
     }
     if (!client) {
@@ -113,7 +113,7 @@ export class ClientsService {
       }
     });
 
-    if (!user || user.role === UserRole.OPERATOR) {
+    if (!user) {
       throw new UnauthorizedException('Unauthorized user');
     }
 

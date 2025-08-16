@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { Controller, Get, Post, Body, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginUseDto } from './dto/login-user.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @Post('/login')
+  async login(@Body() userDtologin: LoginUseDto){
+    const user = await this.usersService.login(userDtologin);
+
+    return user;
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Post('/create')
+  async createUser (@Body() createUser: CreateUserDto, @Req() req:Request) {
+    const userId = (req as any).user as {email: string, id: number};
+    const newUser = await this.usersService.create(createUser, userId.id);
+    return newUser;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @Get("/my")
+  async getMyProfile (@Req() req:Request) {
+    const userId = (req as any).user as {email: string, id: number};
+    const myProfile = await this.usersService.getMyProfile(userId.id);
+
+    return myProfile;
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
-  }
 }
