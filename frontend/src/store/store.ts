@@ -1,9 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
+import fetchMyProfileSlice from "./slices/userSlice";
  
 
 export const store = configureStore({
-    reducer: {},
+    reducer: {
+        user: fetchMyProfileSlice
+    },
 })
 
 

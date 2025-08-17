@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
 import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
+import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById("root")!).render(
       <MantineProvider withGlobalClasses>
         <App />
       </MantineProvider>
+      <ToastContainer/>
     </Provider>
   </StrictMode>
 );

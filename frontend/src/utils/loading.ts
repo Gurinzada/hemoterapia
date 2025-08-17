@@ -1,0 +1,1 @@
+export type loading = "sucess" | "failed" | "iddle" | "pending"
