@@ -13,3 +13,11 @@ export interface client {
     deletedAt:Date | null;
     appointment:appointment[]
 }
+
+
+export interface clientPaginated {
+    clients: client[]
+    total: number;
+    page: number;
+    lastPage: number;
+}

@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import fetchMyProfileSlice from "./slices/userSlice";
+import fetchMyClients from "./slices/clientsSlice";
+import newClient from "./slices/newClientSlice";
  
 
 export const store = configureStore({
     reducer: {
-        user: fetchMyProfileSlice
+        user: fetchMyProfileSlice,
+        clients: fetchMyClients,
+        newClient: newClient
     },
 })
 
