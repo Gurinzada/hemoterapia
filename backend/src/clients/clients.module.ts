@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { ClientsController } from './clients.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,7 +14,8 @@ import { AuthMiddlaware } from 'src/auth/auth.middleware';
 export class ClientsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(AuthMiddlaware)
-      .forRoutes(ClientsController);
+      .apply(AuthMiddlaware).forRoutes({path: "/clients/paginated", method: RequestMethod.GET})
+      .apply(AuthMiddlaware).forRoutes({path: "/clients/*", method: RequestMethod.ALL})
+      .apply(AuthMiddlaware).forRoutes({path: "/clients", method: RequestMethod.ALL})
   }
 }

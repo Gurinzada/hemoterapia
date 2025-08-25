@@ -57,7 +57,7 @@ export class ClientsService {
     return {
       clients: clients,
       total: total,
-      page: page,
+      page: Number(page),
       lastPage: Math.ceil(total/limit),
     }
   }
