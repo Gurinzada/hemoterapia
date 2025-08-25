@@ -1,0 +1,26 @@
+@keyframes Ping {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.AnimatePingOne {
+  animation: Ping 1s infinite ease;
+  animation-delay: 0s;
+}
+
+.AnimatePingTwo {
+  animation: Ping 1s infinite ease;
+  animation-delay: 0.2s;
+}
+
+.AnimatePingThree {
+  animation: Ping 1s infinite ease;
+  animation-delay: 0.4s;
+}
