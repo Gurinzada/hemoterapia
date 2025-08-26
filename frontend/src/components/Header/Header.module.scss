@@ -3,11 +3,10 @@
 .containerHeader {
     align-items: center;
     background-color: #fff;
-    border-bottom: 1px solid #000;
     display: grid;
-    grid-template-columns: 0.5fr 4fr;
+    grid-template-columns: 0fr 1fr;
     gap: 0.55rem;
     justify-content: space-around;
-    padding: 0.35rem;
+    padding: 0.45rem;
     text-align: center;
 }
