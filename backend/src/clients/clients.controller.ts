@@ -16,9 +16,9 @@ export class ClientsController {
   }
 
   @Get('/paginated')
-  async findAllClientsPaginated(@Req() req: Request, @Query('limit') limit:number, @Query("page") page:number) {
+  async findAllClientsPaginated(@Req() req: Request, @Query('limit') limit:number, @Query("page") page:number, @Query("clientName") clientName:string) {
     const idUser = (req as any).user as { id:number; email:string };
-    const response = await this.clientsService.findAllClientsPaginated(idUser.id, limit, page);
+    const response = await this.clientsService.findAllClientsPaginated(idUser.id, limit, page, clientName);
     return response;
   }
 

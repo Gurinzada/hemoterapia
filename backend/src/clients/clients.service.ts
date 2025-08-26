@@ -3,7 +3,7 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from './entities/client.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
@@ -30,7 +30,7 @@ export class ClientsService {
     return savedClient;
   }
 
-  async findAllClientsPaginated(idUser: number, limit:number, page: number) {
+  async findAllClientsPaginated(idUser: number, limit:number, page: number, clientName?:string) {
     const user = await this.userRepository.findOne({
       where: {id: idUser}
     })
@@ -38,10 +38,11 @@ export class ClientsService {
     if(!user) {
       throw new UnauthorizedException("Unauthorized user");
     }
-
+    const clientNameIsNotEmpty = clientName && clientName.trim() !== "";
     const [clients, total] = await this.clientRepository.findAndCount({
       where: {
-        user: {id: idUser}
+        user: {id: idUser},
+        userNameClient: clientNameIsNotEmpty ? Like(`%${clientName}%`) : undefined,
       },
       take: limit,
       skip: (page - 1) * limit,

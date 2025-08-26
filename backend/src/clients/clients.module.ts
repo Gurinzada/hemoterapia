@@ -15,7 +15,7 @@ export class ClientsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddlaware).forRoutes({path: "/clients/paginated", method: RequestMethod.GET})
-      .apply(AuthMiddlaware).forRoutes({path: "/clients/*", method: RequestMethod.ALL})
       .apply(AuthMiddlaware).forRoutes({path: "/clients", method: RequestMethod.ALL})
+      .apply(AuthMiddlaware).forRoutes({path: "/clients/:id", method: RequestMethod.ALL})
   }
 }
