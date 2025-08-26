@@ -19,7 +19,7 @@ export class Client {
     @ManyToOne(() => User, (user) => user.client, {nullable: true})
     user: User;
 
-    @OneToMany(() => Appointment, (appointment) => appointment.client, {nullable: true})
+    @OneToMany(() => Appointment, (appointment) => appointment.client, {nullable: true, onDelete: "CASCADE"})
     appointment: Appointment[];
 
     @CreateDateColumn()
