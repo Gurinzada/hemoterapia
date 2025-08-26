@@ -24,13 +24,14 @@ const initialState: clientState = {
 interface myClientsProps {
     limit:number;
     page: number;
+    clientName:string;
 }
 
 export const fetchMyClients = createAsyncThunk(
   "clients/fetchMyClients",
-  async ({limit = 10, page = 1}: myClientsProps, { rejectWithValue }) => {
+  async ({limit = 10, page = 1, clientName = ""}: myClientsProps, { rejectWithValue }) => {
     try {
-        const response = await api.get(`clients/paginated?limit=${limit}&page=${page}`);
+        const response = await api.get(`clients/paginated?limit=${limit}&page=${page}&clientName=${clientName}`);
         return response.data as clientPaginated;
     } catch (error) {
       if (isAxiosError(error)) {
