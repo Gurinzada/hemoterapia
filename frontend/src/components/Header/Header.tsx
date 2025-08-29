@@ -74,6 +74,7 @@ export default function Header() {
           label="Início"
           leftSection={<IconHome size={16} />}
           onClick={close}
+          href="/home"
         />
         <NavLink
           label="Clientes"
