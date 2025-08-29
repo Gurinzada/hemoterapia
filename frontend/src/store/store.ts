@@ -3,13 +3,15 @@ import { useSelector } from "react-redux";
 import fetchMyProfileSlice from "./slices/userSlice";
 import fetchMyClients from "./slices/clientsSlice";
 import newClient from "./slices/newClientSlice";
+import editClient from "./slices/editClient";
  
 
 export const store = configureStore({
     reducer: {
         user: fetchMyProfileSlice,
         clients: fetchMyClients,
-        newClient: newClient
+        newClient: newClient,
+        editClient: editClient
     },
 })
 

@@ -56,9 +56,7 @@ const newClientSlice = createSlice({
             state.loading = "iddle";
         },
         setNewClientFields(state, action:PayloadAction<fieldsClients>){
-            console.log(action.payload + " " + action.type)
             state.fields = action.payload
-            console.log(state.fields)
         }
     },
     extraReducers(builder) {
