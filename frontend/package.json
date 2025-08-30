@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mantine/core": "^8.2.4",
-    "@mantine/hooks": "^8.2.4",
-    "@mantine/notifications": "^8.2.4",
+    "@mantine/core": "^8.2.7",
+    "@mantine/dates": "^8.2.7",
+    "@mantine/hooks": "^8.2.7",
+    "@mantine/notifications": "^8.2.7",
     "@reduxjs/toolkit": "^2.8.2",
     "@tabler/icons-react": "^3.34.1",
     "axios": "^1.11.0",
+    "dayjs": "^1.11.15",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-redux": "^9.2.0",
