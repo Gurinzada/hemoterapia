@@ -14,7 +14,7 @@ export class Appointment {
     id: number;
 
     @Column()
-    date: Date;
+    date: string;
 
     @Column({type: "decimal", precision: 10, scale: 2, default: 0})
     appointmentValue: number;

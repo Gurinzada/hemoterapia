@@ -4,7 +4,7 @@ import { AppointmentStatus } from "../entities/appointment.entity";
 export class CreateAppointmentDto {
 
     @IsDateString()
-    date: Date;
+    date: string;
 
     @IsNumber({maxDecimalPlaces: 2})
     appointmentValue: number;
