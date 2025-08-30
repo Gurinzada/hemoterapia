@@ -16,10 +16,10 @@ export class AppointmentController {
     return response;
   }
 
-  @Get('/paginated/:id')
-  async getAllAppointmentsPaginated(@Req() req: Request, @Query('limit') limit:number, @Query("page") page:number, @Param("id") idclient:number) {
+  @Get('/paginated')
+  async getAllAppointmentsPaginated(@Req() req: Request, @Query('limit') limit:number, @Query("page") page:number) {
     const idUser = (req as any).user as { id:number; email:string };
-    const response = await this.appointmentService.getAllAppointmentsPaginated(idUser.id, idclient, limit = 10, page = 1);
+    const response = await this.appointmentService.getAllAppointmentsPaginated(idUser.id, limit = 10, page);
     return response
   }
 

@@ -61,7 +61,6 @@ export class AppointmentService {
 
   async getAllAppointmentsPaginated(
     idUser: number,
-    idClient: number,
     limit: number,
     page: number,
   ) {
@@ -75,23 +74,10 @@ export class AppointmentService {
       throw new NotFoundException('User Not Found');
     }
 
-    const client = await this.clientRepository.findOne({
-      where: {
-        id: idClient,
-        user: {
-          id: idUser,
-        },
-      },
-    });
-
-    if (!client) {
-      throw new UnauthorizedException('Client not found');
-    }
 
     const [appointment, total] = await this.appointmentRepository.findAndCount({
       where: {
         client: {
-          id: idClient,
           user: {
             id: idUser,
           },
