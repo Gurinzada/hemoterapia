@@ -31,6 +31,8 @@ export default function Header() {
         return `Seja bem vindo ${user.userName}`
       case "/clients":
         return `Área Clientes`
+      case "/appoitments":
+        return `Área Agendamentos`
       default:
         return ""
     }
