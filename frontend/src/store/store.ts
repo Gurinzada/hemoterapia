@@ -4,6 +4,7 @@ import fetchMyProfileSlice from "./slices/userSlice";
 import fetchMyClients from "./slices/clientsSlice";
 import newClient from "./slices/newClientSlice";
 import editClient from "./slices/editClient";
+import appointment from "./slices/newAppointment";
  
 
 export const store = configureStore({
@@ -11,7 +12,8 @@ export const store = configureStore({
         user: fetchMyProfileSlice,
         clients: fetchMyClients,
         newClient: newClient,
-        editClient: editClient
+        editClient: editClient,
+        newAppointment: appointment
     },
 })
 

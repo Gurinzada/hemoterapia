@@ -1,18 +1,37 @@
+import type { client } from "./client";
+
 export enum AppointmentStatus {
-    PENDING = "Pendente",
-    CONFIRMED = "Confirmado", 
-    CANCELED = "Cancelado",
-    COMPLETED = "Concluído"
+  CANCELED = "Cancelado",  
+  COMPLETED = "Concluído",
+  CONFIRMED = "Confirmado",
+  PENDING = "Pendente",
 }
 
 export interface appointment {
-    id: number;
-    date: Date;
-    appointmentValue: number;
-    paid: boolean;
-    status: AppointmentStatus;
-    paymentMethod: string;
-    createdAt: Date;
-    updatedAt:Date;
-    deletedAt: Date | null;
+  id: number;
+  date: string;
+  appointmentValue: number;
+  paid: boolean;
+  status: AppointmentStatus;
+  client: client;
+  paymentMethod: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+}
+
+export interface appointmentFields {
+  clientid: number;
+  date: string;
+  appointmentValue: number;
+  paid: boolean;
+  status: AppointmentStatus;
+  paymentMethod: string;
+}
+
+export interface appointmentPaginated {
+  appointments: appointment[];
+  total: number;
+  page: number;
+  lastPage: number;
 }
