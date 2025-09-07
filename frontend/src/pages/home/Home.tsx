@@ -11,6 +11,8 @@ import {
   Card,
   Modal,
   Pagination,
+  Paper,
+  Text
 } from "@mantine/core";
 import {
   IconTrash,
@@ -51,7 +53,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(fetchMyAppointments({ limit: 10, page: 1 }));
     dispatch(clearAppointmentFields());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCancelOpenExcludeModal = () => {
@@ -71,7 +73,6 @@ export default function Home() {
       progress: undefined,
     });
     try {
-
       await api.delete(`appointment/${id}`);
       toast.update(loading, {
         isLoading: false,
@@ -89,7 +90,7 @@ export default function Home() {
       setAppoitmentInfo(null);
       setOpenExclude(false);
       await dispatch(fetchMyAppointments({ limit: 10, page: 1 })).unwrap();
-    } catch  {
+    } catch {
       toast.update(loading, {
         render: "Ocorreu um erro ao excluir o agendamento!",
         type: "error",
@@ -104,7 +105,6 @@ export default function Home() {
       });
     }
   };
-
 
   const handleNextPage = async (page: number) => {
     setPage(page);
@@ -131,7 +131,10 @@ export default function Home() {
             <h2>Últimas Hemoterapias</h2>
           </section>
           {appointments.appointments.length === 0 ? (
-            <p>Ainda não foi marcada nenhuma Hemoterapia</p>
+            <Paper shadow="md" radius={"md"} withBorder p={"xl"}>
+              <Text style={{color: "#000", fontSize: "1.05rem"}}>Nenhum agendamento encontrado.</Text>
+              <Text style={{color: "#a2a2a2", fontSize: "0.8rem", marginTop: "0.5rem", fontWeight: 600}}>Cadastre seu primeiro agendamento para aparecer aqui.</Text>
+            </Paper>
           ) : (
             <Accordion
               style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
@@ -169,6 +172,7 @@ export default function Home() {
                           radius={"md"}
                           padding={"lg"}
                           key={client.id}
+                          style={{backgroundColor: `${client.paid ? "#e7e7e7" : ""}`}}
                         >
                           <header
                             style={{
@@ -179,10 +183,14 @@ export default function Home() {
                             }}
                           >
                             <h3>{client.client.userNameClient}</h3>
-                            <IconTrash size={14} color="#fa5252" onClick={() => {
-                              setAppoitmentInfo(client);
-                              setOpenExclude(true);
-                            }}/>
+                            <IconTrash
+                              size={14}
+                              color="#fa5252"
+                              onClick={() => {
+                                setAppoitmentInfo(client);
+                                setOpenExclude(true);
+                              }}
+                            />
                           </header>
                           <main
                             style={{
@@ -259,22 +267,6 @@ export default function Home() {
               ))}
             </Accordion>
           )}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignContent: "flex-end",
-            }}
-          >
-            <Pagination
-              color="teal"
-              radius={"md"}
-              withControls={false}
-              total={appointments.lastPage || 1}
-              value={page}
-              onChange={(page) => handleNextPage(page)}
-            />
-          </div>
         </main>
         <Modal opened={openModal} onClose={() => setOpenModal(false)}>
           <CardAppointment
@@ -301,6 +293,23 @@ export default function Home() {
           }}
         />
       </Container>
+      <footer
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "flex-end",
+          margin: "1rem",
+        }}
+      >
+        <Pagination
+          color="teal"
+          radius={"md"}
+          withControls={false}
+          total={appointments.lastPage || 1}
+          value={page}
+          onChange={(page) => handleNextPage(page)}
+        />
+      </footer>
       <Modal
         opened={openExclude}
         onClose={() => handleCancelOpenExcludeModal()}

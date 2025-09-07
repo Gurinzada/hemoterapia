@@ -13,7 +13,7 @@ import {
   IconSearch,
   IconTrash,
   IconEdit,
-  IconInfoCircle
+  IconInfoCircle,
 } from "@tabler/icons-react";
 import styles from "./Client.module.scss";
 import api from "../../api/api";
@@ -26,7 +26,7 @@ export default function Client() {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState<number>(1);
   const [open, setOpen] = useState<boolean>(false);
-  const [mode, setMode] = useState<string>("")
+  const [mode, setMode] = useState<string>("");
   const [openExclude, setOpenExclude] = useState<boolean>(false);
   const [clientInfo, setClientInfo] = useState<client>({
     appointment: [],
@@ -44,9 +44,8 @@ export default function Client() {
 
   useEffect(() => {
     dispatch(fetchMyClients({ limit: 10, page: 1, clientName: "" }));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   const handleNextPage = async (page: number) => {
     setPage(page);
@@ -103,11 +102,11 @@ export default function Client() {
     setOpenExclude(false);
   };
 
-  const handleGetMyUser = async (id:number) => {
-    await dispatch(findOneClient({id}));
+  const handleGetMyUser = async (id: number) => {
+    await dispatch(findOneClient({ id }));
     setMode("edit");
     setOpen(true);
-  }
+  };
 
   return (
     <>
@@ -127,8 +126,8 @@ export default function Client() {
               variant="filled"
               color="teal"
               onClick={() => {
-                setMode("create")
-                setOpen(true)
+                setMode("create");
+                setOpen(true);
               }}
             >
               Cadastrar Cliente
@@ -171,7 +170,7 @@ export default function Client() {
                   style={{
                     display: "flex",
                     gap: "0.9rem",
-                    width: "100%"
+                    width: "100%",
                   }}
                   className={`${styles.card}`}
                 >
@@ -253,28 +252,12 @@ export default function Client() {
               ))}
             </div>
           </section>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignContent: "flex-end",
-            }}
-          >
-            <Pagination
-              color="teal"
-              radius={"md"}
-              withControls={false}
-              total={client.lastPage || 1}
-              value={page}
-              onChange={(page) => handleNextPage(page)}
-            />
-          </div>
         </main>
         <ModalPattern
           mode={mode}
           onClose={() => setOpen(false)}
           opened={open}
-          page={page}   
+          page={page}
         />
         <Modal
           opened={openExclude}
@@ -282,12 +265,21 @@ export default function Client() {
           title={`Certeza da Exclusão?`}
         >
           <Modal.Body>
-            <div style={{display: "flex", flexDirection: "column", gap: "1rem", alignContent: "center", justifyContent: "center"}}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+                alignContent: "center",
+                justifyContent: "center",
+              }}
+            >
               <div>
-                <IconInfoCircle size={20} color="#fa5252"/>
-                <p style={{textAlign: "center", fontWeight: "600"}}>
-                  Ao clicar em Excluir, todas as informações relacionadas a este cliente não
-                  poderão ser mais acessadas por meio deste aplicativo.
+                <IconInfoCircle size={20} color="#fa5252" />
+                <p style={{ textAlign: "center", fontWeight: "600" }}>
+                  Ao clicar em Excluir, todas as informações relacionadas a este
+                  cliente não poderão ser mais acessadas por meio deste
+                  aplicativo.
                 </p>
               </div>
               <div>
@@ -303,8 +295,23 @@ export default function Client() {
             </div>
           </Modal.Body>
         </Modal>
-
       </Container>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "flex-end",
+        }}
+      >
+        <Pagination
+          color="teal"
+          radius={"md"}
+          withControls={false}
+          total={client.lastPage || 1}
+          value={page}
+          onChange={(page) => handleNextPage(page)}
+        />
+      </div>
     </>
   );
 }

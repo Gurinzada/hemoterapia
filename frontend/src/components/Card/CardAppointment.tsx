@@ -166,7 +166,7 @@ export default function CardAppointment({
     <Card shadow="sm" radius={"md"} padding={"xl"}>
       <Card.Section>
         <div style={{ textAlign: "center" }}>
-          {Title}
+          <h2>{Title}</h2>
           <h3>Agendamento de Clientes</h3>
         </div>
       </Card.Section>

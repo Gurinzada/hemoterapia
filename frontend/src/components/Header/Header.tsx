@@ -6,7 +6,8 @@ import {
   IconHome,
   IconUser,
   IconLogout,
-  IconClock
+  IconClock,
+  IconEngine,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { clearStateUser } from "../../store/slices/userSlice";
@@ -28,15 +29,17 @@ export default function Header() {
   const changeTitle = () => {
     switch (path) {
       case "/home":
-        return `Seja bem vindo ${user.userName}`
+        return `Seja bem vindo ${user.userName}`;
       case "/clients":
-        return `Área Clientes`
+        return `Área Clientes`;
       case "/appoitments":
-        return `Área Agendamentos`
+        return `Área Agendamentos`;
+      case "/admin":
+        return `Área Administração`
       default:
-        return ""
+        return "";
     }
-  }
+  };
 
   return (
     <>
@@ -57,7 +60,7 @@ export default function Header() {
             textAlign: "center",
             textOverflow: "ellipsis",
             border: "1px solid #12b886",
-            borderRadius: "12px"
+            borderRadius: "12px",
           }}
         >
           <h3>{changeTitle()}</h3>
@@ -88,6 +91,13 @@ export default function Header() {
           leftSection={<IconClock size={16} />}
           href="/appoitments"
         />
+        {user.role === "megaadmin" ? (
+          <NavLink
+            label={"Administração"}
+            leftSection={<IconEngine size={16} />}
+            href="/admin"
+          />
+        ) : null}
 
         <div style={{ marginTop: "1rem" }}>
           <Button

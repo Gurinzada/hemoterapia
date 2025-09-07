@@ -4,6 +4,7 @@ import Home from "./pages/home/Home";
 import PrivateRoute from "./components/privateRouter/PrivateRoute";
 import Client from "./pages/clients/Client";
 import Schedule from "./pages/schedule/Schedule";
+import Admin from "./pages/admin/Admin";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,14 @@ export const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <Schedule/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: "/admin",
+    element: (
+      <PrivateRoute>
+        <Admin/>
       </PrivateRoute>
     )
   }
