@@ -29,10 +29,10 @@ export class AppointmentController {
     return response;
   }
 
-  @Patch(":id")
-  async updateAppointment(@Req() req: Request, @Param('id') id: string, @Body() updateAppointmentDto: UpdateAppointmentDto) {
+  @Patch(":id/:clientid")
+  async updateAppointment(@Req() req: Request, @Param('id') id: string, @Param("clientid") clientid:number, @Body() updateAppointmentDto: UpdateAppointmentDto) {
     const idUser = (req as any).user as { id:number; email:string };
-    const response = await this.appointmentService.updateAppointment(+id, updateAppointmentDto, idUser.id);
+    const response = await this.appointmentService.updateAppointment(+id, updateAppointmentDto, idUser.id, +clientid);
     return response;
   }
 

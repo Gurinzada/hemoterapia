@@ -6,7 +6,7 @@ import {
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Appointment } from './entities/appointment.entity';
+import { Appointment, AppointmentStatus } from './entities/appointment.entity';
 import { Repository } from 'typeorm';
 import { Client } from 'src/clients/entities/client.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -95,10 +95,7 @@ export class AppointmentService {
 
     const appointmentsByDate: Record<string, Appointment[]> = {};
     appointment.forEach((item) => {
-      const dateObj = new Date(item.date);
-      const day = String(dateObj.getDate()).padStart(2, '0');
-      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const year = dateObj.getFullYear();
+      const [year, month, day] = item.date.split("-");
       const formattedDateKey = `${day}/${month}/${year}`;
       if(!appointmentsByDate[formattedDateKey]){
         appointmentsByDate[formattedDateKey] = [];
@@ -106,10 +103,17 @@ export class AppointmentService {
       appointmentsByDate[formattedDateKey].push(item);
     })
 
+    const convertAppoitmentsToArray = Object.entries(appointmentsByDate).map(([date, appointments]) => {
+      return ({
+        date,
+        appointment: appointments
+      })
+    })
+
     return {
-      appointments: appointmentsByDate,
+      appointments: convertAppoitmentsToArray,
       total: total,
-      page: page,
+      page: Number(page),
       lastPage: Math.ceil(total / limit),
     }
   }
@@ -118,17 +122,23 @@ export class AppointmentService {
     const findAppointmentClient = await this.appointmentRepository.findOne({
       where: {
         id,
+      },
+      relations: {
+        client: true
       }
     });
 
-    return findAppointmentClient;
+    return {
+      ...findAppointmentClient,
+      clientid: findAppointmentClient?.client.id
+    };
   }
 
-  async updateAppointment(id: number, updateAppointmentDto: UpdateAppointmentDto, idUser: number){
+  async updateAppointment(id: number, updateAppointmentDto: UpdateAppointmentDto, idUser: number, clientid:number){
     const user = await this.userRepository.findOne({
       where: {
         id: idUser
-      }
+      },
     });
 
     if (!user) {
@@ -138,6 +148,9 @@ export class AppointmentService {
     const updateAppointment = await this.appointmentRepository.findOne({
       where: {
         id,
+      },
+      relations: {
+        client: true
       }
     });
 
@@ -145,12 +158,14 @@ export class AppointmentService {
       throw new NotFoundException("Appointment not found");
     }
 
-    if (Object.keys(updateAppointmentDto).length === 0) {
-      return updateAppointment;
-    }
+    updateAppointment.client.id = Number(clientid);
+    updateAppointment.appointmentValue = Number(updateAppointmentDto.appointmentValue);
+    updateAppointment.date = String(updateAppointmentDto.date);
+    updateAppointment.paid = Boolean(updateAppointmentDto.paid);
+    updateAppointment.paymentMethod = String(updateAppointmentDto.paymentMethod);
+    updateAppointment.status = (updateAppointmentDto.status as AppointmentStatus);
 
-    const updatedAppointment = Object.assign(updateAppointment, updateAppointmentDto);
-    return this.appointmentRepository.save(updatedAppointment);
+    return this.appointmentRepository.save(updateAppointment);
   }
 
   async removeAppointment(id: number, idUser: number) {

@@ -29,8 +29,13 @@ export interface appointmentFields {
   paymentMethod: string;
 }
 
+interface appointmentResponse {
+  date:string;
+  appointment: appointment[];
+}
+
 export interface appointmentPaginated {
-  appointments: appointment[];
+  appointments: appointmentResponse[]
   total: number;
   page: number;
   lastPage: number;

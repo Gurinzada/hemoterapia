@@ -9,7 +9,7 @@ import type {
 } from "../../utils/appointment";
 import type { loading } from "../../utils/loading";
 import api from "../../api/api";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 interface appointmentState {
   appointmentFields: appointmentFields;
@@ -30,8 +30,13 @@ const initialState: appointmentState = {
   loading: "iddle",
 };
 
+interface appointmentUpdateProps {
+  id: number;
+  appointment: appointmentFields;
+}
+
 export const createAppointment = createAsyncThunk(
-  "appointment/createAppointment",
+  "appointmentCreate/createAppointment",
   async (appointment: appointmentFields, { rejectWithValue }) => {
     try {
       const response = await api.post(`appointment/${appointment.clientid}`, {
@@ -48,8 +53,41 @@ export const createAppointment = createAsyncThunk(
   }
 );
 
+export const getAnAppointment = createAsyncThunk(
+  "appointmentCreate/getAnAppointment",
+  async (id:number, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`appointment/${id}`);
+      return response.data as appointmentFields;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue(error);
+    }
+  }
+)
+
+export const updateAnAppointment = createAsyncThunk(
+  "appointmentCreate/updateAnAppointment",
+  async ({appointment, id}: appointmentUpdateProps, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(`appointment/${id}/${appointment.clientid}`, {
+        ...appointment
+      })
+      return response.data as appointmentFields;
+    } catch (error) {
+      if(isAxiosError(error)){
+        return rejectWithValue(error.message);
+      } else {
+        return rejectWithValue(error);
+      }
+    }
+  }
+)
+
 const appointmentSlice = createSlice({
-  name: "appointment",
+  name: "appointmentCreate",
   initialState,
   reducers: {
     setFieldsAppoitment(state, action: PayloadAction<appointmentFields>) {
@@ -59,7 +97,7 @@ const appointmentSlice = createSlice({
     },
     clearAppointmentFields(state) {
       state.appointmentFields = {
-        appointmentValue: null as unknown as number,
+        appointmentValue: 0,
         date: null as unknown as string,
         clientid: null as unknown as number,
         paid: false,
@@ -77,7 +115,7 @@ const appointmentSlice = createSlice({
       .addCase(createAppointment.fulfilled, (state) => {
         state.loading = "sucess";
         state.appointmentFields = {
-          appointmentValue: null as unknown as number,
+          appointmentValue: 0 as unknown as number,
           date: null as unknown as string,
           clientid: null as unknown as number,
           paid: false,
@@ -88,7 +126,32 @@ const appointmentSlice = createSlice({
       .addCase(createAppointment.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.payload as string;
-      });
+      })
+      .addCase(getAnAppointment.pending, (state) => {
+        state.loading = "pending";
+        state.error = null;
+      })
+      .addCase(getAnAppointment.fulfilled, (state, action) => {
+        state.loading = "sucess";
+        state.appointmentFields = action.payload as appointmentFields;
+        console.log(state.appointmentFields);
+      })
+      .addCase(getAnAppointment.rejected, (state, action) => {
+        state.loading = "failed";
+        state.error = action.payload as string;
+      })
+      .addCase(updateAnAppointment.pending, (state) => {
+        state.loading = "pending";
+        state.error = null;
+      })
+      .addCase(updateAnAppointment.fulfilled, (state, action) => {
+        state.loading = "sucess";
+        state.appointmentFields = action.payload as appointmentFields;
+      })
+      .addCase(updateAnAppointment.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.loading = "failed";
+      })
   },
 });
 
