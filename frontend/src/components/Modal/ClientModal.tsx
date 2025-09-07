@@ -23,6 +23,7 @@ export default function ClientModal({
     if (opened) {
       dispatch(fetchMyClients({ clientName: "", limit: 10, page: 1 }));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened]);
 
   const handleNextPage = async (page: number) => {
