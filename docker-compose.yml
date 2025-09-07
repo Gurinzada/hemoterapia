@@ -1,0 +1,44 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: ""
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./backend
+    container_name: nest_backend
+    restart: always
+    environment:
+      HOST: mysql           # Nome do serviço do MySQL
+      PORT_DATABASE: 3306
+      DB_NAME: root         # Root user
+      PASSWORD: ""
+      DATABASE_NAME: 
+      BACKEND_ADDRESS: http://localhost:3000/api/
+      FRONTEND_ADDRESS: http://localhost:5173/
+      JWT_SECRET: GURINZADA
+      JWT_EXPIRES_IN: 1h
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: vite_frontend
+    restart: always
+    environment:
+     - VITE_BASE_URL_BACKEND=http://localhost:3000/api/
+     - VITE_BASE_URL_FRONTEND=http://localhost:5173/
+    ports:
+      - "5173:80"
+
+volumes:
+  mysql_data:
